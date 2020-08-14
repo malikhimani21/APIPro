@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms'
+import { ActivatedRoute } from '@angular/router'
+import { RestServiceService } from '../rest-service.service'
 
 @Component({
   selector: 'app-update',
@@ -7,9 +10,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UpdateComponent implements OnInit {
 
-  constructor() { }
+  alert: boolean = false
+  editRest = new FormGroup({
+    name: new FormControl(''),
+    email: new FormControl(''),
+    address: new FormControl(''),
+  })
+
+  constructor(private router: ActivatedRoute, private rest: RestServiceService) { }
 
   ngOnInit(): void {
+    console.warn(this.router.snapshot.params.id)
+    this.rest.getCurrentRest(this.router.snapshot.params.id).subscribe((result) => {
+      console.warn(result)
+      this.editRest = new FormGroup({
+        name: new FormControl(result['name']),
+        email: new FormControl(result['email']),
+        address: new FormControl(result['address']),
+      })
+    })
+  }
+
+  collection() {
+    console.warn('Item', this.editRest.value)
+    this.rest.updateRest(this.router.snapshot.params.id, this.editRest.value).subscribe((result) => {
+      console.warn("Result ", result)
+      this.alert = true
+    })
+  }
+  closeAlert() {
+    this.alert = false
   }
 
 }

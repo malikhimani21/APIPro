@@ -8,7 +8,7 @@ import { RestServiceService } from '../rest-service.service'
 })
 export class ListComponent implements OnInit {
 
-  collection = {}
+  collection: any = [];
 
   constructor(private rest: RestServiceService) { }
 
@@ -18,6 +18,14 @@ export class ListComponent implements OnInit {
       this.collection = i;
     })
 
+  }
+
+  deleteRestApi(item) {
+    console.warn(this.collection)
+    this.collection.splice(item - 1, 1)
+    this.rest.deleteData(item).subscribe((i) => {
+      console.warn(i)
+    })
   }
 
 }

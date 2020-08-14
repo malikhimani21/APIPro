@@ -19,5 +19,16 @@ export class RestServiceService {
     return this.http.post(this.url, data);
   }
 
+  deleteData(id) {
+    return this.http.delete(`${this.url}/${id}`)
+  }
+
+  getCurrentRest(id) {
+    return this.http.get(`${this.url}/${id}`)
+  }
+  
+  updateRest(id, data) {
+    return this.http.put(`${this.url}/${id}`, data)
+  }
 
 }
